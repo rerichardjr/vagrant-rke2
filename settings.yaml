@@ -1,0 +1,25 @@
+---
+nodes:
+  server:
+    hostname: rke2-server1
+    cpu: 2
+    memory: 8196
+  agent:
+    hostname: rke2-agent
+    count: 2
+    cpu: 2
+    memory: 8196
+support_user: support
+ip:
+  network: '192.168.1.'
+  server_net_start: 20
+  agent_net_start: 40
+  domain: 'abccorp.local'
+bridge: enp9s0
+install_addons: true
+software:
+  box: bento/ubuntu-24.04
+  helm: v3.16.2
+  rancher: latest
+  cert-manager: v1.16.1
+  longhorn: 1.7.1
