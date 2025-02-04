@@ -133,9 +133,6 @@ The list of addons include:
   - Ensure virtualization is enabled in BIOS/UEFI.
   - Verify VirtualBox and Vagrant versions are compatible.
 
-- **Network Configuration Errors:**
-  - Check `scripts/configure_network.sh` for custom network settings.
-
 - **Add-on Installation Fails:**
   - Review logs inside the VM (`/var/log` or specified log files).
   - Ensure internet connectivity inside the VM.
