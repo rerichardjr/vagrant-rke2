@@ -10,7 +10,6 @@ This repository contains a **Vagrantfile** that automates the provisioning of a 
   - [Installing Vagrant](#installing-vagrant)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [Add-ons](#add-ons)
 - [Folder Structure](#folder-structure)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
