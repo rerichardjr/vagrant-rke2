@@ -1,25 +1,18 @@
 ---
-nodes:
-  server:
-    hostname: rke2-server1
-    cpu: 2
-    memory: 8196
-  agent:
-    hostname: rke2-agent
-    count: 2
-    cpu: 2
-    memory: 8196
+host:
+  hostname: node
+  worker: 1 # worker node count
+  cpu: 2
+  memory: 4096
+  deployment: cluster # control plane deployment: cluster (3 nodes) or single (1 node)
 support_user: support
 ip:
-  network: '192.168.1.'
-  server_net_start: 20
-  agent_net_start: 40
-  domain: 'abccorp.local'
-bridge: enp9s0
-install_addons: true
+  network: '192.168.3'
+  start: 40
+  domain: 'test.local'
+  vip_hostname: cluster
+  vip: 35
+bridge: "enp6s0f0"
+install_addons: false
 software:
   box: bento/ubuntu-24.04
-  helm: v3.16.2
-  rancher: latest
-  cert-manager: v1.16.1
-  longhorn: 1.7.1

@@ -1,142 +1,72 @@
-# RKE2 Vagrant Cluster Setup
+# RKE2 Vagrant Environment
 
-This repository contains a **Vagrantfile** that automates the provisioning of a lightweight **RKE2 (Rancher Kubernetes Engine 2)** cluster using VirtualBox. The setup is configurable via a `settings.yaml` file and includes optional add-ons like **Helm**, **Rancher**, **Cert Manager**, and **Longhorn**.
+This repository provides a fully automated Vagrant-based environment for deploying [RKE2](https://docs.rke2.io/) in either a **single-node** or **multi-node cluster** configuration. It supports customizable worker node counts and network settings, making it ideal for local testing, development, and experimentation.
 
-## Table of Contents
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation Guide](#installation-guide)
-  - [Installing VirtualBox](#installing-virtualbox)
-  - [Installing Vagrant](#installing-vagrant)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Folder Structure](#folder-structure)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
+---
 
 ## Features
-- Automated deployment of an RKE2 cluster using Vagrant and VirtualBox.
-- Configurable settings via `settings.yaml`.
-- Optional installation of add-ons: Helm, Rancher, Cert Manager, Longhorn.
-- Custom bash scripts for further node configuration, located in the `scripts` folder.
 
-## Prerequisites
-Ensure you have the following installed:
-- VirtualBox
-- Vagrant
-- Git
+- Deploy RKE2 in **single-node** or **cluster** mode
+- Automatically provisions control plane and worker nodes
+- Configurable number of worker nodes
+- VIP-based control plane bootstrapping with kube-vip
+- Customizable CPU, memory, and network settings
+- Uses VirtualBox and bridged networking
 
-## Installation Guide
-
-### Installing VirtualBox
-
-#### **Ubuntu/Debian:**
-```bash
-sudo apt update
-sudo apt install -y virtualbox
-```
-
-#### **Fedora/RHEL:**
-```bash
-sudo dnf install -y @virtualization
-sudo systemctl start vboxdrv
-sudo systemctl enable vboxdrv
-```
-
-#### **macOS (with Homebrew):**
-```bash
-brew install --cask virtualbox
-```
-
-#### **Windows:**
-1. Download the installer from [VirtualBox Downloads](https://www.virtualbox.org/wiki/Downloads).
-2. Run the installer and follow the on-screen instructions.
-
-### Installing Vagrant
-
-#### **Ubuntu/Debian:**
-```bash
-sudo apt update
-sudo apt install -y vagrant
-```
-
-#### **Fedora/RHEL:**
-```bash
-sudo dnf install -y vagrant
-```
-
-#### **macOS (with Homebrew):**
-```bash
-brew install --cask vagrant
-```
-
-#### **Windows:**
-1. Download the installer from [Vagrant Downloads](https://www.vagrantup.com/downloads).
-2. Run the installer and follow the on-screen instructions.
-
-## Configuration
-All configuration options are managed through the `settings.yaml` file.
-
-### Example `settings.yaml`:
-```yaml
-install_addons: true
-```
-- **install_addons:** Set to `true` to install Helm, Rancher, Cert Manager, and Longhorn automatically. Set to `false` to skip add-on installation.
-
-### Add-ons
-The list of addons include:
-- **Helm:** Package manager for Kubernetes.
-- **Rancher:** Kubernetes management platform.
-- **Cert Manager:** Automates management and issuance of TLS certificates.
-- **Longhorn:** Distributed block storage system for Kubernetes.
-
+---
 
 ## Usage
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/rerichardjr/vagrant-rke2.git
-   cd vagrant-rke2
-   ```
-2. Modify `settings.yaml` as needed.
-3. Start the cluster:
-   ```bash
-   vagrant up
-   ```
-4. To SSH into a VM:
-   ```bash
-   vagrant ssh <vm_name>
-   ```
-5. To halt the cluster:
-   ```bash
-   vagrant halt
-   ```
-6. To destroy the cluster:
-   ```bash
-   vagrant destroy -f
-   ```
 
-## Folder Structure
-```
-.
-├── Vagrantfile
-├── settings.yaml
-├── scripts/
-│   ├── addons.sh
-│   ├── agent-node.sh
-│   ├── common.sh
-│   └── server-node.sh
-└── README.md
+### 1. Install Prerequisites
+
+- [Vagrant](https://www.vagrantup.com/downloads)
+- [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+
+### 2. Configure `settings.yaml`
+
+Edit the file to match your desired topology and network.
+
+### 3. Start the Environment
+
+```bash
+vagrant up
 ```
 
-## Troubleshooting
-- **VM Startup Issues:**
-  - Ensure virtualization is enabled in BIOS/UEFI.
-  - Verify VirtualBox and Vagrant versions are compatible.
+This will:
+- Create the required folders
+- Provision each node with its role (control plane or worker)
+- Configure networking and kube-vip
+- Wait for ingress controller health before removing bootstrap IP
 
-- **Add-on Installation Fails:**
-  - Review logs inside the VM (`/var/log` or specified log files).
-  - Ensure internet connectivity inside the VM.
+### 4. Access the Cluster
+
+After provisioning, you can access the cluster using:
+
+```bash
+vagrant ssh node1
+kubectl get nodes
+```
+
+---
+
+## Cleanup
+
+To destroy all VMs and remove resources:
+
+```bash
+vagrant destroy -f
+```
+
+---
+
+## Notes
+
+- VIP is assigned to `eth1` and used for control plane bootstrapping.
+- The script waits for both kube-vip and ingress-nginx to be healthy before removing the temporary `/24` IP.
+- You can customize the kube-vip manifest and RBAC files in `files/`.
+
+---
 
 ## License
-This project is licensed under the [MIT License](LICENSE).
 
+MIT License. See `LICENSE` file for details.
