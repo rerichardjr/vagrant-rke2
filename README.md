@@ -1,17 +1,17 @@
 # RKE2 Vagrant Environment
 
-This repository provides a fully automated Vagrant-based environment for deploying [RKE2](https://docs.rke2.io/) in either a **single-node** or **multi-node cluster** configuration. It supports customizable worker node counts and network settings, making it ideal for local testing, development, and experimentation.
+This repository provides a fully automated Vagrant-based environment for deploying [RKE2](https://docs.rke2.io/), Rancher's Kubernetes distribution, in either a **single-node control plane** or a **high-availability (HA) control plane** configuration. In HA mode, the control plane spans three nodes and uses [kube-vip](https://kube-vip.io/) for virtual IP failover and leader election. You can also customize the number of worker nodes and network settings, making this setup ideal for local testing, development, and experimentation.
 
 ---
 
 ## Features
 
-- Deploy RKE2 in **single-node** or **cluster** mode
+- Deploy RKE2 with either:
+  - A **single-node control plane** (no VIP, lightweight setup)
+  - A **three-node HA control plane** with **kube-vip**
 - Automatically provisions control plane and worker nodes
 - Configurable number of worker nodes
-- VIP-based control plane bootstrapping with kube-vip
-- Customizable CPU, memory, and network settings
-- Uses VirtualBox and bridged networking
+- Customizable CPU, memory, and network settings via `settings.yaml`
 
 ---
 
