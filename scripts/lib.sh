@@ -22,7 +22,9 @@ create_service_account() {
   fi
 
   if ! id "$user" >/dev/null 2>&1; then
-    sudo useradd -M --system -g "$group" "$user"
+    sudo useradd --system --no-create-home \
+      --home-dir / --shell /usr/sbin/nologin \
+      -g "$group" "$user"
   fi
 }
 
